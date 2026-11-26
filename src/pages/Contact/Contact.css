@@ -1,0 +1,1273 @@
+/* =========================================
+   Contact Page — Full-height Minimal Layout
+   ใช้ token สี/ฟอนต์จาก home.css (:root + [data-theme="dark"])
+   โครงตาม Figma frame 55:17 — หัวข้อ gradient มีเส้นคั่นสองข้าง
+   + แถวข้อมูลติดต่อ (ตัดรูปภาพออกทั้งหมด)
+========================================= */
+
+/* เต็มจอแนวตั้ง: hero อยู่กลาง, footer แถวล่างชิดขอบจอ */
+.contact-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 96px clamp(1.5rem, 4vw, 3.5rem) 1.5rem;
+}
+
+.contact-hero {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: min(100%, 1280px);
+  margin: 0 auto;
+  gap: clamp(2.25rem, 6vh, 4rem);
+}
+
+/* =========================================
+   Fade-up Animation (ตอนโหลดหน้า)
+========================================= */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-up {
+  opacity: 0;
+  animation: fade-up 0.7s ease forwards;
+}
+
+/* =========================================
+   ContactHeader — ข้อความโปรย + หัวข้อหลัก
+========================================= */
+.contact-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.contact-tagline {
+  font-family: var(--font-nav);
+  font-size: clamp(14px, 1.6vw, 19px);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gray-text);
+  margin-bottom: clamp(1rem, 3vh, 1.75rem);
+}
+
+/* หัวข้อหลัก + เส้นคั่น gradient สองข้าง (ตามแบบ Figma) */
+.contact-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1rem, 3vw, 2.5rem);
+  width: 100%;
+}
+
+.title-line {
+  flex: 1;
+  max-width: 260px;
+  height: 2px;
+  background: var(--grad-divider);
+}
+
+/* หัวข้อหลัก — Judson Bold + gradient ดำ→ฟ้า ผ่าน .text-gradient จาก home.css */
+.contact-title {
+  font-family: var(--font-heading-serif);
+  font-weight: bold;
+  font-size: clamp(28px, 5.5vw, 76px);
+  line-height: 1.15;
+  text-transform: uppercase;
+  margin: 0;
+  white-space: nowrap;
+}
+
+/* =========================================
+   EmailCard — อีเมล + ปุ่ม COPY
+========================================= */
+.email-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.9rem;
+  flex-wrap: wrap;
+}
+
+/* ลิงก์อีเมล — ขีดเส้นใต้ตามแบบ Figma เดิม */
+.contact-email {
+  font-family: var(--font-heading-serif);
+  font-weight: bold;
+  font-size: clamp(18px, 2.4vw, 34px);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 6px;
+  transition: color 0.3s ease, text-decoration-color 0.3s ease;
+}
+
+.contact-email:hover {
+  color: var(--blue-nav);
+  text-decoration-color: var(--blue-nav);
+}
+
+/* ปุ่ม COPY อีเมล — โครงเส้นล้วน มินิมอล */
+.copy-btn {
+  font-family: var(--font-nav);
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: var(--gray-text);
+  background: transparent;
+  border: 1px solid var(--gray-text);
+  border-radius: var(--radius-pill);
+  padding: 7px 18px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.3s ease, border-color 0.3s ease, background 0.3s ease, transform 0.2s ease;
+}
+
+.copy-btn:hover {
+  color: #FFFFFF;
+  background: var(--blue-nav);
+  border-color: var(--blue-nav);
+  transform: translateY(-1px);
+}
+
+.copy-btn.copied {
+  color: #FFFFFF;
+  background: var(--blue-deep);
+  border-color: var(--blue-deep);
+}
+
+/* =========================================
+   SocialGrid — Grid 4 คอลัมน์เท่ากัน
+========================================= */
+.social-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem clamp(1rem, 3vw, 2rem);
+  width: min(100%, 900px);
+}
+
+.social-link {
+  font-family: var(--font-heading-serif);
+  font-weight: bold;
+  font-size: clamp(16px, 1.8vw, 24px);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
+  text-align: center;
+  justify-self: center;
+  position: relative;
+  padding-bottom: 6px;
+  transition: color 0.3s ease;
+}
+
+/* ลูกศร ↗ เลื่อนเข้ามาตอนชี้ */
+.social-link .arrow {
+  display: inline-block;
+  font-size: 0.7em;
+  opacity: 0;
+  transform: translate(-6px, 6px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* เส้นใต้เคลื่อนไหว — งอกจากกลางตัวอักษร */
+.social-link::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 0;
+  height: 2px;
+  background: var(--blue-nav);
+  transform: translateX(-50%);
+  transition: width 0.35s ease;
+}
+
+.social-link:hover {
+  color: var(--blue-nav);
+}
+
+.social-link:hover::after {
+  width: 100%;
+}
+
+.social-link:hover .arrow {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+/* =========================================
+   Contact Footer — เวลา / © / Back to top
+========================================= */
+.contact-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+  flex-wrap: wrap;
+  width: 100%;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--gray-text);
+}
+
+.local-time {
+  font-family: var(--font-nav);
+  font-size: clamp(12px, 1.4vw, 14px);
+  letter-spacing: 2px;
+  color: var(--gray-text);
+  font-variant-numeric: tabular-nums; /* เลขไม่สั่นตอนเปลี่ยนวินาที */
+}
+
+.copyright {
+  font-family: var(--font-nav);
+  font-size: clamp(12px, 1.4vw, 14px);
+  letter-spacing: 1px;
+  color: var(--gray-text);
+}
+
+.back-to-top {
+  font-family: var(--font-nav);
+  font-size: clamp(12px, 1.4vw, 14px);
+  letter-spacing: 2px;
+  color: var(--ink);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  padding-bottom: 4px;
+  transition: color 0.3s ease;
+}
+
+.back-to-top::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 1px;
+  background: var(--blue-nav);
+  transition: width 0.35s ease;
+}
+
+.back-to-top:hover {
+  color: var(--blue-nav);
+}
+
+.back-to-top:hover::after {
+  width: 100%;
+}
+
+.back-to-top span {
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+.back-to-top:hover span {
+  transform: translateY(-2px);
+}
+
+/* =========================================
+   Focus State — มองเห็นชัดทุกโหมด
+========================================= */
+.contact-page a:focus-visible,
+.contact-page button:focus-visible {
+  outline: 2px solid var(--blue-nav);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+/* =========================================
+   Responsive — Tablet (2 คอลัมน์) / Mobile (1 คอลัมน์)
+========================================= */
+@media (max-width: 768px) {
+  .contact-page {
+    padding-top: 120px;
+  }
+
+  .social-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem 1rem;
+    width: min(100%, 420px);
+  }
+
+  .email-card {
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  /* อีเมลยาว ให้ตัดคำได้บนจอแคบ */
+  .contact-email {
+    word-break: break-all;
+  }
+
+  .contact-footer {
+    justify-content: center;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .social-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* จอแคบมาก: ซ่อนเส้นคั่นข้างหัวข้อ แล้วให้หัวข้อตัดคำได้ */
+@media (max-width: 420px) {
+  .title-line { display: none; }
+  .contact-title { white-space: normal; text-align: center; }
+}
+
+/* =========================================
+   เคารพการตั้งค่า prefers-reduced-motion
+========================================= */
+@media (prefers-reduced-motion: reduce) {
+  .fade-up {
+    animation: none;
+    opacity: 1; /* แสดงเนื้อหาทันทีโดยไม่มีอนิเมชัน */
+  }
+
+  .contact-email,
+  .social-link,
+  .social-link::after,
+  .social-link .arrow,
+  .copy-btn,
+  .back-to-top,
+  .back-to-top::after,
+  .back-to-top span {
+    transition: none;
+  }
+}
+
+
+/* =========================================
+   Navbar Brand Logo (สลับตามโหมดสว่าง/มืด)
+========================================= */
+/* ยึดโลโก้ไว้ที่มุมซ้ายบนสุดของหน้าจอ */
+.nav-brand-logo {
+  position: fixed;
+  top: 1rem;      /* ระดับความสูงเดียวกับ .main-nav */
+  left: -38rem;     /* ระยะห่างจากขอบซ้ายของหน้าจอ (ปรับเพิ่ม/ลดได้) */
+  height: 50px;   /* สูงเท่ากับ .main-nav เพื่อให้กึ่งกลางแนวตั้งตรงกันเป๊ะ */
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  z-index: 1001;  /* ลอยอยู่เหนือเนื้อหาเว็บเวลาเลื่อนลง */
+}
+
+.nav-brand-logo img {
+  height: 100px;   /* ปรับขนาดโลโก้ตรงนี้ได้ตามชอบ */
+  width: auto;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.nav-brand-logo:hover img {
+  transform: scale(1.05);
+}
+
+/* โหมดสว่าง (ค่าเริ่มต้น): โชว์ 03 ซ่อน 01 */
+.logo-light {
+  display: block;
+}
+.logo-dark {
+  display: none;
+}
+
+/* โหมดมืด: ซ่อน 03 โชว์ 01 (รองรับทั้งหน้า Home และหน้า Team) */
+[data-theme="dark"] .logo-light,
+body.dark-mode .logo-light {
+  display: none;
+}
+
+[data-theme="dark"] .logo-dark,
+body.dark-mode .logo-dark {
+  display: block;
+}
+
+/* =========================================
+   Contact Page — Full-height Minimal Layout
+   ใช้ token สี/ฟอนต์จาก home.css (:root + [data-theme="dark"])
+========================================= */
+
+.contact-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 130px clamp(1rem, 2.5vw, 2.25rem) 1.5rem;
+}
+
+/* ดันส่วน Contact ลงมากลางหน้าจอแรก เว้นระยะจาก Navbar ให้โปร่งสบายตา */
+.contact-hero {
+  min-height: calc(100vh - 200px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: min(100%, 1280px);
+  margin: 0 auto;
+  padding: clamp(2rem, 6vh, 4rem) 0 clamp(3rem, 8vh, 5.5rem);
+  gap: clamp(2.25rem, 6vh, 4rem);
+}
+
+/* =========================================
+   Fade-up Animation (ตอนโหลดหน้า)
+========================================= */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-up {
+  opacity: 0;
+  animation: fade-up 0.7s ease forwards;
+}
+
+/* =========================================
+   ContactHeader — ข้อความโปรย + หัวข้อหลัก
+========================================= */
+.contact-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.contact-tagline {
+  font-family: var(--font-nav);
+  font-size: clamp(14px, 1.6vw, 19px);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gray-text);
+  margin-bottom: clamp(1rem, 3vh, 1.75rem);
+}
+
+.contact-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1rem, 3vw, 2.5rem);
+  width: 100%;
+}
+
+.title-line {
+  flex: 1;
+  max-width: 260px;
+  height: 2px;
+  background: var(--grad-divider);
+}
+
+.contact-title {
+  font-family: var(--font-heading-serif);
+  font-weight: bold;
+  font-size: clamp(28px, 5.5vw, 76px);
+  line-height: 1.15;
+  text-transform: uppercase;
+  margin: 0;
+  white-space: nowrap;
+}
+
+/* =========================================
+   EmailCard — อีเมล + ปุ่ม COPY
+========================================= */
+.email-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.9rem;
+  flex-wrap: wrap;
+}
+
+.contact-email {
+  font-family: var(--font-heading-serif);
+  font-weight: bold;
+  font-size: clamp(18px, 2.4vw, 34px);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 6px;
+  transition: color 0.3s ease, text-decoration-color 0.3s ease;
+}
+
+.contact-email:hover {
+  color: var(--blue-nav);
+  text-decoration-color: var(--blue-nav);
+}
+
+.copy-btn {
+  font-family: var(--font-nav);
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: var(--gray-text);
+  background: transparent;
+  border: 1px solid var(--gray-text);
+  border-radius: var(--radius-pill);
+  padding: 7px 18px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.3s ease, border-color 0.3s ease, background 0.3s ease, transform 0.2s ease;
+}
+
+.copy-btn:hover {
+  color: #FFFFFF;
+  background: var(--blue-nav);
+  border-color: var(--blue-nav);
+  transform: translateY(-1px);
+}
+
+.copy-btn.copied {
+  color: #FFFFFF;
+  background: var(--blue-deep);
+  border-color: var(--blue-deep);
+}
+
+/* =========================================
+   SocialGrid — Grid 4 คอลัมน์เท่ากัน
+========================================= */
+.social-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem clamp(1rem, 3vw, 2rem);
+  width: min(100%, 900px);
+}
+
+.social-link {
+  font-family: var(--font-heading-serif);
+  font-weight: bold;
+  font-size: clamp(16px, 1.8vw, 24px);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
+  text-align: center;
+  justify-self: center;
+  position: relative;
+  padding-bottom: 6px;
+  transition: color 0.3s ease;
+}
+
+.social-link .arrow {
+  display: inline-block;
+  font-size: 0.7em;
+  opacity: 0;
+  transform: translate(-6px, 6px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.social-link::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 0;
+  height: 2px;
+  background: var(--blue-nav);
+  transform: translateX(-50%);
+  transition: width 0.35s ease;
+}
+
+.social-link:hover {
+  color: var(--blue-nav);
+}
+
+.social-link:hover::after {
+  width: 100%;
+}
+
+.social-link:hover .arrow {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+/* =========================================
+   Contact Footer — เวลา / © / Back to top
+========================================= */
+.contact-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+  flex-wrap: wrap;
+  width: 100%;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--gray-text);
+}
+
+.local-time {
+  font-family: var(--font-nav);
+  font-size: clamp(12px, 1.4vw, 14px);
+  letter-spacing: 2px;
+  color: var(--gray-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.copyright {
+  font-family: var(--font-nav);
+  font-size: clamp(12px, 1.4vw, 14px);
+  letter-spacing: 1px;
+  color: var(--gray-text);
+}
+
+.back-to-top {
+  font-family: var(--font-nav);
+  font-size: clamp(12px, 1.4vw, 14px);
+  letter-spacing: 2px;
+  color: var(--ink);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  padding-bottom: 4px;
+  transition: color 0.3s ease;
+}
+
+.back-to-top::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 1px;
+  background: var(--blue-nav);
+  transition: width 0.35s ease;
+}
+
+.back-to-top:hover {
+  color: var(--blue-nav);
+}
+
+.back-to-top:hover::after {
+  width: 100%;
+}
+
+.back-to-top span {
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+.back-to-top:hover span {
+  transform: translateY(-2px);
+}
+
+
+/* =========================================
+   Navbar Brand Logo (สลับตามโหมดสว่าง/มืด)
+========================================= */
+.nav-brand-logo {
+  position: fixed;
+  top: 1rem;
+  left: -38rem;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  z-index: 1001;
+}
+
+.nav-brand-logo img {
+  height: 100px;
+  width: auto;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.nav-brand-logo:hover img {
+  transform: scale(1.05);
+}
+
+.logo-light {
+  display: block;
+}
+.logo-dark {
+  display: none;
+}
+
+[data-theme="dark"] .logo-light,
+body.dark-mode .logo-light {
+  display: none;
+}
+
+[data-theme="dark"] .logo-dark,
+body.dark-mode .logo-dark {
+  display: block;
+}
+
+/* =========================================
+   Contact — Wide Landscape Gallery (เกือบเต็มหน้าจอ)
+   ไม่มีข้อความ ไม่มีกากบาท ไม่กดขยาย เหลือเฉพาะรูป + JS Effects
+========================================= */
+.contact-wide-gallery {
+  width: 100%;
+  max-width: 85%;
+  margin: 10rem auto 5.5rem auto;
+  padding: 0;
+}
+
+/* กริด 2 คอลัมน์ขนาดใหญ่เต็มความกว้างหน้าจอ */
+.wide-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(14px, 1.6vw, 24px);
+}
+
+/* กรณีใช้ 3 รูป: รูปแรกขยายเต็มความกว้าง 2 คอลัมน์ รูปที่ 2-3 คู่กันด้านล่าง */
+.wide-gallery-grid.layout-3 .wide-photo-cell:first-child {
+  grid-column: 1 / -1;
+}
+
+.wide-gallery-grid.layout-3 .wide-photo-cell:first-child .wide-photo-card {
+  aspect-ratio: 21 / 9;
+}
+
+/* Scroll Reveal ไล่ขึ้นทีละรูป */
+.wide-photo-cell {
+  opacity: 0;
+  transform: translateY(44px) scale(0.97);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.wide-photo-cell.is-revealed {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Focus Hover: รูปที่ไม่ได้ชี้จะดรอปแสงลงเบาๆ */
+.wide-gallery-grid:hover .wide-photo-cell {
+  opacity: 0.72;
+  transition: opacity 0.3s ease;
+}
+
+.wide-gallery-grid:hover .wide-photo-cell:hover {
+  opacity: 1;
+  z-index: 4;
+}
+
+/* ตัวกรอบรูปแนวนอน 16:9 แบบคลีน ไม่มีเส้นกากบาท ไม่มีตัวหนังสือ */
+.wide-photo-card {
+  --spot-x: 50%;
+  --spot-y: 50%;
+
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 1px solid rgba(130, 130, 130, 0.32);
+  border-radius: 18px;
+  background-color: var(--bg-secondary);
+  overflow: hidden;
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+              border-color 0.3s ease,
+              box-shadow 0.3s ease;
+}
+
+.wide-photo-card:hover {
+  border-color: var(--blue-nav);
+  box-shadow: 0 22px 48px rgba(53, 141, 223, 0.18);
+  transition: transform 0.08s ease-out,
+              border-color 0.3s ease,
+              box-shadow 0.3s ease;
+}
+
+.wide-photo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.wide-photo-card:hover .wide-photo-img {
+  transform: scale(1.04);
+}
+
+/* แสง Spotlight วิ่งตามเมาส์ */
+.wide-photo-spotlight {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(
+    460px circle at var(--spot-x) var(--spot-y),
+    rgba(65, 154, 255, 0.22),
+    transparent 62%
+  );
+  transition: opacity 0.3s ease;
+}
+
+.wide-photo-card:hover .wide-photo-spotlight {
+  opacity: 1;
+}
+
+/* =========================================
+   Responsive — Tablet / Mobile
+========================================= */
+@media (max-width: 768px) {
+  .contact-page {
+    padding: 130px 1rem 1.5rem;
+  }
+
+  .contact-hero {
+    min-height: calc(100vh - 180px);
+  }
+
+  .social-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem 1rem;
+    width: min(100%, 420px);
+  }
+
+  .email-card {
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .contact-email {
+    word-break: break-all;
+  }
+
+  .contact-footer {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .wide-gallery-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .wide-gallery-grid.layout-3 .wide-photo-cell:first-child .wide-photo-card {
+    aspect-ratio: 16 / 9;
+  }
+
+  .wide-gallery-grid:hover .wide-photo-cell {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .social-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 420px) {
+  .title-line { display: none; }
+  .contact-title { white-space: normal; text-align: center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-up {
+    animation: none;
+    opacity: 1;
+  }
+
+  .contact-email,
+  .social-link,
+  .social-link::after,
+  .social-link .arrow,
+  .copy-btn,
+  .back-to-top,
+  .back-to-top::after,
+  .back-to-top span,
+  .wide-photo-cell,
+  .wide-photo-card,
+  .wide-photo-img {
+    transition: none;
+    transform: none;
+    opacity: 1;
+  }
+}
+/* =========================================
+   FAQ Section + Scroll Hint (block ใหม่ท้ายไฟล์ — ไม่แก้กฎเดิม)
+   - .contact-page--stacked / .contact-original: ปรับ layout ให้เนื้อหาเดิม
+     สั้นกว่าเต็มจอเล็กน้อย เพื่อให้หัว FAQ โผล่ที่ขอบล่างจอ (peek)
+========================================= */
+.contact-page--stacked {
+  min-height: 0;
+  justify-content: flex-start;
+  padding-bottom: 0.5rem;
+}
+
+.contact-original {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: calc(100vh - 180px);
+}
+
+/* ---------- Scroll hint ---------- */
+.scroll-hint {
+  margin: 0 auto 1.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  background: none;
+  border: none;
+  padding: 6px 10px;
+  cursor: pointer;
+  color: var(--gray-text, #313131);
+  transition: opacity 0.45s ease, color 0.3s ease;
+}
+
+.scroll-hint-text {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 5px;
+  opacity: 0.75;
+  transition: opacity 0.3s ease;
+}
+
+.scroll-hint-icon {
+  display: inline-flex;
+  opacity: 0.85;
+}
+
+/* จุด wheel ในเมาส์ — เลื่อนลงจางหายแล้ววนกลับ (ตัวเมาส์นิ่ง) */
+.scroll-wheel {
+  animation: wheel-dot 1.9s ease-in-out infinite;
+}
+
+@keyframes wheel-dot {
+  0%   { transform: translateY(0);   opacity: 1; }
+  55%  { transform: translateY(8px); opacity: 0; }
+  56%  { transform: translateY(0);   opacity: 0; }
+  100% { transform: translateY(0);   opacity: 1; }
+}
+
+.scroll-hint:hover {
+  color: var(--blue-nav, #419AFF);
+}
+
+.scroll-hint:hover .scroll-hint-text {
+  opacity: 1;
+}
+
+.scroll-hint.is-hidden {
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+}
+
+.scroll-hint:focus-visible {
+  outline: 2px solid var(--blue-nav, #419AFF);
+  outline-offset: 4px;
+  border-radius: 8px;
+}
+
+/* ---------- FAQ ---------- */
+.contact-faq {
+  width: min(100%, 860px);
+  margin: 2.5rem auto 4rem;
+}
+
+.faq-section-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.faq-heading {
+  margin: 0 0 0.9rem;
+  font-family: var(--font-heading-serif, Georgia, serif);
+  font-size: clamp(56px, 8vw, 96px);
+  line-height: 1;
+  background: var(--grad-text, linear-gradient(79deg, #000 3.5%, #368DDF 64%));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* เส้นคั่น gradient ฟ้า — แนวเดียวกับหน้าอื่น */
+.faq-rule {
+  height: 2px;
+  background: linear-gradient(90deg, #1a1b3c 0%, #419AFF 100%);
+  opacity: 0.85;
+}
+
+.faq-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* การ์ดคำถาม — มุมโค้ง ขอบบาง wireframe เหมือนการ์ดอื่นของเว็บ */
+.faq-item {
+  border: 1px solid rgba(49, 49, 49, 0.35);
+  border-radius: 14px;
+  background: var(--bg-primary, #ffffff);
+  overflow: hidden;
+  transition: border-color 0.3s ease, background 0.3s ease;
+}
+
+/* hover — ขอบ/พื้นเป็นโทนฟ้า gradient เบาๆ */
+.faq-item:hover {
+  border-color: rgba(65, 154, 255, 0.65);
+  background: linear-gradient(135deg, rgba(77, 160, 255, 0.05) 0%, rgba(170, 228, 255, 0.1) 100%);
+}
+
+.faq-item.is-open {
+  border-color: rgba(65, 154, 255, 0.65);
+}
+
+.faq-q-heading {
+  margin: 0;
+}
+
+.faq-question {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  color: var(--ink, #090909);
+}
+
+.faq-num {
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: var(--blue-nav, #419AFF);
+  flex: 0 0 auto;
+}
+
+.faq-q-text {
+  flex: 1;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+/* ไอคอน + / – วาดด้วย CSS — หมุนเมื่อเปิด */
+.faq-icon {
+  position: relative;
+  flex: 0 0 auto;
+  width: 22px;
+  height: 22px;
+  transition: transform 0.35s ease;
+}
+
+.faq-icon::before,
+.faq-icon::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background: var(--blue-nav, #419AFF);
+  border-radius: 2px;
+}
+
+.faq-icon::before {
+  width: 16px;
+  height: 2px;
+  transform: translate(-50%, -50%);
+}
+
+.faq-icon::after {
+  width: 2px;
+  height: 16px;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.3s ease, transform 0.35s ease;
+}
+
+/* เปิด: แท่งตั้งหมด (กลายเป็น –) + หมุนทั้งไอคอน 180° */
+.faq-item.is-open .faq-icon {
+  transform: rotate(180deg);
+}
+
+.faq-item.is-open .faq-icon::after {
+  opacity: 0;
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+/* กางคำตอบ — grid-template-rows 0fr → 1fr */
+.faq-answer-wrap {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.4s ease;
+}
+
+.faq-item.is-open .faq-answer-wrap {
+  grid-template-rows: 1fr;
+}
+
+.faq-answer {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.faq-answer p {
+  margin: 0;
+  padding: 0 20px 20px calc(20px + 16px + 24px); /* เทียบระยะกับข้อความคำถาม */
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--gray-text, #313131);
+}
+
+/* ท้าย FAQ */
+.faq-more {
+  margin: 2rem 0 0;
+  text-align: center;
+  font-size: 15px;
+  color: var(--gray-text, #313131);
+}
+
+.faq-more-link {
+  font-weight: 700;
+  color: var(--blue-nav, #419AFF);
+  text-decoration: none;
+  border-bottom: 1.5px solid rgba(65, 154, 255, 0.5);
+  padding-bottom: 2px;
+  transition: border-color 0.3s ease, color 0.3s ease;
+}
+
+.faq-more-link:hover {
+  color: var(--grad-btn, #419AFF);
+  border-bottom-color: var(--blue-nav, #419AFF);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 600px) {
+  .faq-question {
+    padding: 15px 16px;
+    gap: 12px;
+  }
+
+  .faq-q-text {
+    font-size: 15.5px;
+  }
+
+  .faq-answer p {
+    padding: 0 16px 16px calc(16px + 12px + 22px);
+    font-size: 14.5px;
+  }
+
+  .faq-num {
+    font-size: 12.5px;
+  }
+
+  .faq-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .faq-icon::before {
+    width: 14px;
+  }
+
+  .faq-icon::after {
+    height: 14px;
+  }
+
+  .contact-faq {
+    margin: 2rem auto 3rem;
+  }
+}
+
+/* ---------- Dark mode (body.dark-mode ชุดเดียวกับหน้าอื่น) ---------- */
+body.dark-mode .faq-heading {
+  background: linear-gradient(79deg, #f8fafc 3.5%, #4da0ff 64%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+body.dark-mode .faq-rule {
+  background: linear-gradient(90deg, #4da0ff 0%, #334155 100%);
+}
+
+body.dark-mode .faq-item {
+  border-color: rgba(148, 163, 184, 0.35);
+  background: rgba(42, 74, 138, 0.12);
+}
+
+body.dark-mode .faq-item:hover,
+body.dark-mode .faq-item.is-open {
+  border-color: rgba(77, 160, 255, 0.6);
+  background: linear-gradient(135deg, rgba(42, 74, 138, 0.3) 0%, rgba(30, 58, 110, 0.25) 100%);
+}
+
+body.dark-mode .faq-question {
+  color: #f8fafc;
+}
+
+body.dark-mode .faq-num,
+body.dark-mode .faq-icon::before,
+body.dark-mode .faq-icon::after {
+  color: #4da0ff;
+  background: #4da0ff;
+}
+
+body.dark-mode .faq-answer p {
+  color: #cbd5e1;
+}
+
+body.dark-mode .scroll-hint {
+  color: #94a3b8;
+}
+
+body.dark-mode .scroll-hint:hover {
+  color: #4da0ff;
+}
+
+body.dark-mode .faq-more {
+  color: #cbd5e1;
+}
+
+/* ---------- prefers-reduced-motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-wheel {
+    animation: none;
+  }
+
+  .scroll-hint,
+  .faq-item,
+  .faq-icon,
+  .faq-icon::after,
+  .faq-answer-wrap,
+  .faq-more-link {
+    transition: none;
+  }
+}
+
+/* จุด landing เวลา scroll ไป FAQ — เว้นหัวให้ navbar fixed */
+.contact-faq {
+  scroll-margin-top: 90px;
+}
+
+/* ย้ายบรรทัดเวลา BANGKOK ลงแถวล่างสุดของ footer กึ่งกลาง (block ใหม่ — ไม่แก้กฎเดิม) */
+.contact-footer--time-bottom .local-time {
+  flex-basis: 100%;
+  text-align: center;
+  margin-top: 0.35rem;
+}

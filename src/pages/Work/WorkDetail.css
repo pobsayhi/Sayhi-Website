@@ -1,0 +1,739 @@
+/* =========================================
+   Work Detail Page (in Work)
+   ใช้ตัวแปรสีเดิมจาก home.css ทั้งหมด
+========================================= */
+.work-detail-page {
+  width: 100%;
+  background-color: var(--bg-primary);
+  color: var(--ink);
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* =========================================
+   1. Top Hero Banner + 3-Column Stats
+========================================= */
+.wd-hero {
+  width: 100%;
+}
+
+.wd-hero-media {
+  position: relative;
+  width: 100%;
+  height: clamp(360px, 52vh, 520px);
+  background-color: var(--bg-primary);
+  border-bottom: 1px solid var(--gray-text);
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+}
+
+/* โครงกากบาท Wireframe เมื่อยังไม่มีรูป */
+.wd-hero-media:not(.has-image) {
+  background-image:
+    linear-gradient(
+      to top right,
+      transparent calc(50% - 0.5px),
+      var(--gray-text) calc(50% - 0.5px),
+      var(--gray-text) calc(50% + 0.5px),
+      transparent calc(50% + 0.5px)
+    ),
+    linear-gradient(
+      to bottom right,
+      transparent calc(50% - 0.5px),
+      var(--gray-text) calc(50% - 0.5px),
+      var(--gray-text) calc(50% + 0.5px),
+      transparent calc(50% + 0.5px)
+    );
+}
+
+.wd-hero-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.wd-hero-fade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 45%,
+    rgba(0, 0, 0, 0.28) 76%,
+    var(--bg-primary) 100%
+  );
+  pointer-events: none;
+}
+
+.wd-hero-stats {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1260px;
+  margin: 0 auto;
+  padding: 0 2rem 1.25rem 2rem;
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  align-items: end;
+  gap: 1.5rem;
+}
+
+.wd-stat-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.wd-stat-center {
+  align-items: center;
+  text-align: center;
+}
+
+.wd-stat-right {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.wd-stat-value {
+  font-family: var(--font-nav);
+  font-size: clamp(26px, 3.6vw, 44px);
+  font-weight: 700;
+  color: #FFFFFF;
+  margin: 0;
+  line-height: 1.1;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+}
+
+.wd-stat-label {
+  font-family: var(--font-nav);
+  font-size: clamp(13px, 1.1vw, 15px);
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.wd-desc-wrapper {
+  max-width: 1260px;
+  margin: 0 auto;
+  padding: 1.25rem 2rem 1rem 2rem;
+}
+
+.wd-desc-text {
+  max-width: 860px;
+  font-size: clamp(14px, 1.15vw, 17px);
+  line-height: 1.6;
+  color: var(--ink);
+  margin: 0;
+}
+
+/* =========================================
+   2. Breadcrumb & Creator + Artwork Showcase
+========================================= */
+.wd-content-container {
+  max-width: 1260px;
+  margin: 0 auto;
+  padding: 0.75rem 2rem 2rem 2rem;
+}
+
+.wd-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 2.25rem;
+  color: var(--blue-deep);
+}
+
+[data-theme="dark"] .wd-breadcrumb {
+  color: var(--blue-nav);
+}
+
+.wd-crumb-link {
+  display: inline-flex;
+  align-items: center;
+  color: inherit;
+  text-decoration: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.wd-crumb-link:hover {
+  opacity: 0.75;
+  transform: translateY(-1px);
+}
+
+.wd-crumb-sep {
+  font-size: 16px;
+  font-weight: 600;
+  opacity: 0.7;
+}
+
+.wd-crumb-active {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border: 2px solid var(--blue-nav);
+  border-radius: 6px;
+  color: var(--blue-nav);
+}
+
+/* --- 2-Column Showcase --- */
+.wd-showcase-grid {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+/* คอลัมน์ซ้าย: รูปคนทำ + กรอบคำพูด + ปุ่ม VIEW MORE */
+.wd-creator-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.wd-creator-stage {
+  position: relative;
+  width: 100%;
+  padding-top: 22px; /* เผื่อที่ให้กรอบคำพูดด้านบนซ้าย */
+}
+
+.wd-speech-bubble {
+  position: absolute;
+  top: 0;
+  left: -8px;
+  z-index: 3;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--gray-text);
+  border-radius: 16px;
+  padding: 0.45rem 0.9rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* หางกรอบคำพูดชี้ลงไปที่ตัวคน */
+.wd-speech-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -7px;
+  right: 22px;
+  width: 12px;
+  height: 12px;
+  background-color: var(--bg-secondary);
+  border-right: 1px solid var(--gray-text);
+  border-bottom: 1px solid var(--gray-text);
+  transform: rotate(45deg);
+}
+
+.wd-bubble-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--blue-nav);
+}
+
+.wd-bubble-name {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.wd-creator-box {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border: 1px solid var(--gray-text);
+  border-radius: 16px;
+  background-color: var(--bg-primary);
+  overflow: hidden;
+  position: relative;
+}
+
+.wd-creator-box:not(.has-image) {
+  background-image:
+    linear-gradient(
+      to top right,
+      transparent calc(50% - 0.5px),
+      var(--gray-text) calc(50% - 0.5px),
+      var(--gray-text) calc(50% + 0.5px),
+      transparent calc(50% + 0.5px)
+    ),
+    linear-gradient(
+      to bottom right,
+      transparent calc(50% - 0.5px),
+      var(--gray-text) calc(50% - 0.5px),
+      var(--gray-text) calc(50% + 0.5px),
+      transparent calc(50% + 0.5px)
+    );
+}
+
+.wd-creator-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+
+.wd-view-more-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.55rem 2.2rem;
+  border-radius: var(--radius-pill);
+  background: var(--grad-btn);
+  color: #FFFFFF;
+  font-family: var(--font-nav);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(53, 141, 223, 0.3);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.wd-view-more-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(53, 141, 223, 0.45);
+}
+
+/* คอลัมน์ขวา: รูปชิ้นผลงาน + ราคา */
+.wd-artwork-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.wd-artwork-frame {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border: 1px solid var(--gray-text);
+  border-radius: 16px;
+  background-color: var(--bg-primary);
+  overflow: hidden;
+  position: relative;
+}
+
+.wd-artwork-frame:not(.has-image) {
+  background-image:
+    linear-gradient(
+      to top right,
+      transparent calc(50% - 0.5px),
+      var(--gray-text) calc(50% - 0.5px),
+      var(--gray-text) calc(50% + 0.5px),
+      transparent calc(50% + 0.5px)
+    ),
+    linear-gradient(
+      to bottom right,
+      transparent calc(50% - 0.5px),
+      var(--gray-text) calc(50% - 0.5px),
+      var(--gray-text) calc(50% + 0.5px),
+      transparent calc(50% + 0.5px)
+    );
+}
+
+.wd-artwork-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.wd-artwork-price {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+}
+
+.wd-price-label {
+  font-family: var(--font-nav);
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.wd-price-value {
+  font-family: var(--font-nav);
+  font-size: clamp(28px, 3vw, 38px);
+  font-weight: 700;
+  color: var(--blue-nav);
+}
+
+/* เส้นคั่นกลางหน้า */
+.wd-divider {
+  width: 100%;
+  height: 2px;
+  background: var(--grad-divider);
+  margin: 3rem 0 1rem 0;
+}
+
+/* =========================================
+   3. Other work — Marquee เลื่อนอัตโนมัติ
+========================================= */
+.wd-other-section {
+  width: 100%;
+  padding: 0 0 5rem 0;
+  overflow: hidden;
+}
+
+.wd-other-header {
+  text-align: center;
+  margin-bottom: 2.25rem;
+}
+
+.wd-other-title {
+  display: inline-block;
+  font-family: var(--font-nav);
+  font-size: clamp(26px, 3vw, 36px);
+  font-weight: 700;
+  color: var(--blue-nav);
+  margin: 0;
+  padding-bottom: 4px;
+  border-bottom: 3px solid var(--blue-nav);
+}
+
+.wd-other-marquee {
+  width: 100%;
+  overflow: hidden;
+}
+
+.wd-other-track {
+  --other-marquee-duration: 38s;
+  display: flex;
+  width: max-content;
+  animation: wd-other-scroll var(--other-marquee-duration) linear infinite;
+}
+
+.wd-other-group {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+@keyframes wd-other-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* หยุดเลื่อนเมื่อชี้เมาส์หรือแตะค้าง */
+.wd-other-marquee:hover .wd-other-track,
+.wd-other-marquee.is-paused .wd-other-track {
+  animation-play-state: paused;
+}
+
+.wd-other-card {
+  flex: 0 0 240px;
+  width: 240px;
+  display: block;
+  text-decoration: none;
+  transition: transform 0.25s ease;
+}
+
+.wd-other-card:hover {
+  transform: translateY(-5px);
+}
+
+.wd-other-thumb {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border: 1px solid var(--gray-text);
+  border-radius: 14px;
+  background-color: var(--bg-primary);
+  overflow: hidden;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.wd-other-card:hover .wd-other-thumb {
+  border-color: var(--blue-nav);
+  box-shadow: 0 8px 20px rgba(53, 141, 223, 0.22);
+}
+
+.wd-other-thumb:not(.has-image) {
+  background-image:
+    linear-gradient(
+      to top right,
+      transparent calc(50% - 0.5px),
+      var(--gray-text) calc(50% - 0.5px),
+      var(--gray-text) calc(50% + 0.5px),
+      transparent calc(50% + 0.5px)
+    ),
+    linear-gradient(
+      to bottom right,
+      transparent calc(50% - 0.5px),
+      var(--gray-text) calc(50% - 0.5px),
+      var(--gray-text) calc(50% + 0.5px),
+      transparent calc(50% + 0.5px)
+    );
+}
+
+.wd-other-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* =========================================
+   4. Responsive (Tablet & Mobile)
+========================================= */
+@media (max-width: 900px) {
+  .wd-showcase-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .wd-creator-col {
+    max-width: 280px;
+    margin: 0 auto;
+    width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .wd-hero-stats {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    padding: 0 1.25rem 1rem 1.25rem;
+  }
+
+  .wd-stat-center,
+  .wd-stat-right {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .wd-other-card {
+    flex: 0 0 190px;
+    width: 190px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wd-other-track {
+    animation: none;
+  }
+}
+/* =========================================
+   Zoom — ปุ่มซูมบนกรอกรูป + Lightbox (block ใหม่ท้ายไฟล์ — ไม่แก้กฎเดิม)
+========================================= */
+.wd-artwork-frame {
+  position: relative;
+}
+
+.wd-artwork-frame .wd-artwork-img {
+  cursor: zoom-in;
+}
+
+/* ปุ่มซูม — วงกลมมุมล่างขวาของกรอบ */
+.wd-zoom-btn {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(9, 9, 9, 0.62);
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+  transition: background 0.25s ease, transform 0.25s ease;
+  z-index: 2;
+}
+
+.wd-zoom-btn:hover {
+  background: rgba(65, 154, 255, 0.85);
+  transform: scale(1.08);
+}
+
+.wd-zoom-btn:focus-visible {
+  outline: 3px solid var(--blue-nav, #419AFF);
+  outline-offset: 3px;
+}
+
+/* ---------- Lightbox ---------- */
+.wd-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(9, 9, 9, 0.88);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: zoom-out;
+  overflow: hidden;
+}
+
+.wd-lightbox-img {
+  max-width: 90vw;
+  max-height: 82vh;
+  object-fit: contain;
+  cursor: default;
+  transition: transform 0.25s ease;
+  will-change: transform;
+}
+
+.wd-lightbox-close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 42px;
+  height: 42px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.wd-lightbox-close:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.08);
+}
+
+.wd-lightbox-close:focus-visible {
+  outline: 3px solid var(--blue-nav, #419AFF);
+  outline-offset: 3px;
+}
+
+/* แถบควบคุม +/- และเปอร์เซ็นต์ซูม */
+.wd-lightbox-controls {
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 24px;
+  padding: 6px 14px;
+  backdrop-filter: blur(4px);
+}
+
+.wd-lightbox-controls button {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+  font-size: 17px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.25s ease;
+}
+
+.wd-lightbox-controls button:hover {
+  background: rgba(65, 154, 255, 0.8);
+}
+
+.wd-lightbox-controls button:focus-visible {
+  outline: 2px solid var(--blue-nav, #419AFF);
+  outline-offset: 2px;
+}
+
+.wd-lightbox-scale {
+  color: #fff;
+  font-size: 13px;
+  letter-spacing: 1px;
+  min-width: 44px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.wd-lightbox-hint {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 12px;
+  letter-spacing: 1px;
+  margin: 0;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wd-zoom-btn,
+  .wd-lightbox-img,
+  .wd-lightbox-close,
+  .wd-lightbox-controls button {
+    transition: none;
+  }
+}
+
+/* =========================================
+   YouTube facade — วิดีโอ MOTION (block ใหม่ท้ายไฟล์ — ไม่แก้กฎเดิม)
+========================================= */
+.wd-yt-facade {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border: none;
+  padding: 0;
+  background: none;
+  cursor: pointer;
+  display: block;
+}
+
+.wd-yt-facade .wd-artwork-img {
+  cursor: pointer;
+}
+
+.wd-yt-play-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(9, 9, 9, 0.62);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 5px;
+  backdrop-filter: blur(4px);
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.wd-yt-facade:hover .wd-yt-play-btn {
+  background: rgba(65, 154, 255, 0.9);
+  transform: translate(-50%, -50%) scale(1.08);
+}
+
+.wd-yt-facade:focus-visible {
+  outline: 3px solid var(--blue-nav, #419AFF);
+  outline-offset: 3px;
+}
+
+.wd-yt-embed {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wd-yt-play-btn,
+  .wd-yt-facade:hover .wd-yt-play-btn {
+    transition: none;
+    transform: translate(-50%, -50%);
+  }
+}

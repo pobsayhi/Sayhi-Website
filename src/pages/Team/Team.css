@@ -1,0 +1,515 @@
+.team-page-container {
+  max-width: 1300px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px 4%;
+  min-height: 80vh;
+}
+
+.breadcrumb {
+  font-size: 14px;
+  margin-bottom: 20px;
+  opacity: 0.7;
+}
+
+/* =========================================
+   หัวหน้า — "OUR TEAM" gradient + บรรทัดอธิบาย + เส้นคั่น
+   (แทนการ์ด hero สีฟ้าที่ถูกถอดออก)
+========================================= */
+.team-page-header {
+  text-align: center;
+  padding-top: 120px; /* เว้นใต้ navbar fixed */
+  margin-bottom: 34px;
+}
+
+.team-page-title {
+  margin: 0 0 10px;
+  font-size: clamp(44px, 7vw, 84px);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  background: var(--grad-text, linear-gradient(79deg, #000 3.5%, #368DDF 64%));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.team-page-subtitle {
+  margin: 0 auto 22px;
+  font-size: 15px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--gray-text, #313131);
+  max-width: 60ch;
+}
+
+/* เส้นคั่น gradient ฟ้า — แนวเดียวกับเส้นคั่นหน้า /team/:id */
+.team-page-rule {
+  height: 2px;
+  background: linear-gradient(90deg, #1a1b3c 0%, #419AFF 100%);
+  opacity: 0.85;
+}
+
+.see-all-indicator {
+  text-align: center;
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.see-all-text {
+  font-weight: bold;
+  font-size: 18px;
+  letter-spacing: 2px;
+  border-bottom: 3px solid;
+  padding-bottom: 4px;
+}
+
+.down-arrow-icon {
+  font-size: 30px;
+  color: #479cc4;
+  margin-top: 5px;
+}
+
+.view-toggle-container {
+  display: flex;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #0056b3;
+  padding-bottom: 10px;
+}
+
+.toggle-bg {
+  background: #0056b3;
+  border-radius: 20px;
+  padding: 5px;
+  display: inline-flex;
+}
+
+.toggle-btn {
+  background: transparent;
+  border: none;
+  color: rgba(255,255,255,0.5);
+  font-size: 20px;
+  padding: 2px 15px;
+  cursor: pointer;
+  border-radius: 15px;
+  transition: 0.3s;
+}
+
+.toggle-btn.active {
+  background: #fff;
+  color: #0056b3;
+}
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* แบ่งพื้นที่เต็มความกว้างออกเป็น 3 ช่องใหญ่เท่าๆ กัน */
+  gap: 40px; /* เพิ่มช่องไฟระหว่างการ์ดให้ดูโปร่งและสมส่วนกับขนาดที่ใหญ่ขึ้น */
+  margin-bottom: 60px;
+}
+
+.team-grid.list-view {
+  grid-template-columns: 1fr;
+}
+.team-grid.list-view .team-card {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+.team-grid.list-view .card-img-placeholder {
+  width: 150px;
+  height: 150px;
+}
+
+.team-card {
+  opacity: 0;
+  transform: translateY(45px);
+  transition: opacity 0.7s ease-out, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.team-card.animate-show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.card-img-placeholder {
+  width: 100%;
+  aspect-ratio: 4/5;
+  border: 1px solid #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.card-img-placeholder::before, .card-img-placeholder::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  background: #ccc;
+}
+
+.card-img-placeholder::before {
+  transform: rotate(50deg);
+}
+
+.card-img-placeholder::after {
+  transform: rotate(-50deg);
+}
+
+.x-mark {
+  background: #fff;
+  padding: 10px;
+  z-index: 1;
+}
+
+.card-info {
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px;
+}
+
+.member-nickname {
+  font-size: 24px;
+  font-weight: 800;
+  margin-bottom: 5px;
+}
+
+.member-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  transition: transform 0.4s ease;
+
+  /* เพิ่ม 3 บรรทัดนี้เพื่อลดรอยหยักและจุดสีขาวเวลาบีบขนาดรูป */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: smooth;
+  transform: translateZ(0);
+}
+
+.member-fullname, .member-role {
+  font-size: 12px;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+@media (max-width: 768px) {
+  .team-page-header {
+    padding-top: 100px;
+    margin-bottom: 26px;
+  }
+}
+
+body.team-dark-bg {
+  /* ใช้ตัวแปรกลางจาก home.css เดียวกับหน้า Home/Work/Contact (#24262C ตอนมืด) */
+  background-color: var(--bg-primary, #0f172a);
+  color: #f8fafc;
+}
+
+/* หัวหน้าบนพื้นมืด — gradient ตัวอักษรเปลี่ยนเป็นขาว→ฟ้าให้ตัดกับพื้น */
+body.dark-mode .team-page-title {
+  background: linear-gradient(79deg, #f8fafc 3.5%, #4da0ff 64%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+body.dark-mode .team-page-subtitle {
+  color: #cbd5e1;
+}
+
+body.dark-mode .team-page-rule {
+  background: linear-gradient(90deg, #4da0ff 0%, #334155 100%);
+}
+
+body.dark-mode .team-card {
+  color: #f8fafc;
+}
+
+body.dark-mode .card-img-placeholder {
+  border-color: #334155;
+  background-color: #1e293b;
+}
+
+body.dark-mode .card-img-placeholder::before,
+body.dark-mode .card-img-placeholder::after {
+  background: #334155;
+}
+
+body.dark-mode .x-mark {
+  background: #1e293b;
+  color: #94a3b8;
+}
+
+body.dark-mode .card-info {
+  border-bottom-color: #334155;
+}
+
+body.dark-mode .see-all-text {
+  border-bottom-color: #f8fafc;
+}
+
+
+
+
+.card-img-placeholder {
+  overflow: hidden;
+}
+
+
+.card-img-placeholder.has-image::before,
+.card-img-placeholder.has-image::after {
+  display: none;
+}
+
+.member-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.team-card:hover .member-photo {
+  transform: scale(1.05);
+}
+
+/* จัดการการแสดงผลรูปภาพสมาชิก */
+.card-img-placeholder {
+  overflow: hidden;
+}
+
+.card-img-placeholder.has-image::before,
+.card-img-placeholder.has-image::after {
+  display: none;
+}
+
+.member-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  transition: transform 0.4s ease;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: smooth;
+  transform: translateZ(0);
+}
+
+.team-card:hover .member-photo {
+  transform: scale(1.05);
+}
+
+/* =========================================
+   Navbar Brand Logo (สลับตามโหมดสว่าง/มืด)
+========================================= */
+/* ยึดโลโก้ไว้ที่มุมซ้ายบนสุดของหน้าจอ */
+.nav-brand-logo {
+  position: fixed;
+  top: 1rem;      /* ระดับความสูงเดียวกับ .main-nav */
+  left: -38rem;     /* ระยะห่างจากขอบซ้ายของหน้าจอ (ปรับเพิ่ม/ลดได้) */
+  height: 50px;   /* สูงเท่ากับ .main-nav เพื่อให้กึ่งกลางแนวตั้งตรงกันเป๊ะ */
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  z-index: 1001;  /* ลอยอยู่เหนือเนื้อหาเว็บเวลาเลื่อนลง */
+}
+
+.nav-brand-logo img {
+  height: 100px;   /* ปรับขนาดโลโก้ตรงนี้ได้ตามชอบ */
+  width: auto;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.nav-brand-logo:hover img {
+  transform: scale(1.05);
+}
+
+/* โหมดสว่าง (ค่าเริ่มต้น): โชว์ 03 ซ่อน 01 */
+.logo-light {
+  display: block;
+}
+.logo-dark {
+  display: none;
+}
+
+/* โหมดมืด: ซ่อน 03 โชว์ 01 (รองรับทั้งหน้า Home และหน้า Team) */
+[data-theme="dark"] .logo-light,
+body.dark-mode .logo-light {
+  display: none;
+}
+
+[data-theme="dark"] .logo-dark,
+body.dark-mode .logo-dark {
+  display: block;
+}
+
+/* =========================================
+   Member Card — Link + Hover Preview (เพิ่มใหม่)
+   การ์ดเป็น <a> (Link ไป /team/:id) — ต้องไม่มี underline
+   และสีตัวอักษรใช้สีเดิมของหน้า
+========================================= */
+a.team-card {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  outline: none;
+}
+
+a.team-card:focus-visible {
+  outline: 3px solid var(--blue-nav, #419AFF);
+  outline-offset: 4px;
+}
+
+/* Preview overlay — ครอบรูปด้วย gradient ฟ้าตาม --grad-card ของเว็บ */
+.card-preview {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 18px;
+  background: linear-gradient(180deg, rgba(53, 141, 223, 0.55) 0%, rgba(29, 77, 121, 0.95) 100%);
+  color: #fff;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+}
+
+.team-card:hover .card-preview,
+.team-card:focus-visible .card-preview {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --- preview แบบภาพย่อของหน้า detail: รูปสมาชิก + กริดผลงาน 3x2 + ชื่อเล่น --- */
+.preview-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.preview-avatar {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.75);
+  overflow: hidden;
+  flex: 0 0 auto;
+  background: rgba(255, 255, 255, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.preview-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+
+/* ตัวอักษรแรกแสดงเสมออยู่ใต้รูป — รูปโชว์ทับ, รูปหาย (display:none) จึงเห็นตัวอักษรแทน */
+.preview-avatar-initial {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.preview-nickname {
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.1;
+  margin: 0;
+}
+
+/* กริดผลงานย่อ 3x2 — thumbnail จริงจาก works[] หรือช่อง placeholder */
+.preview-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+}
+
+.preview-cell {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  background: rgba(255, 255, 255, 0.12);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.preview-cell.is-empty {
+  opacity: 0.35;
+  border-style: dashed;
+}
+
+.preview-cell img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.preview-cell-x {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.preview-cta {
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-top: 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.8);
+  align-self: flex-start;
+  padding-bottom: 2px;
+}
+
+/* มืด: ขยาย gradient ให้เข้มขึ้นเล็กน้อยให้กลืนกับพื้นหลังมืด */
+body.dark-mode .card-preview {
+  background: linear-gradient(180deg, rgba(42, 74, 138, 0.65) 0%, rgba(16, 32, 74, 0.96) 100%);
+}
+
+/* ทัชสกรีน (ไม่มี hover): ซ่อน preview ทิ้ง — แตะครั้งเดียวไปหน้ารายละเอียดเลย */
+@media (hover: none) {
+  .card-preview {
+    display: none;
+  }
+}
+
+/* เคารพ prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .card-preview {
+    transition: none;
+    transform: none;
+  }
+
+  .team-card:hover .member-photo,
+  .team-card:focus-visible .member-photo {
+    transform: none;
+  }
+}

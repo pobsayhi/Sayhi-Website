@@ -1,0 +1,602 @@
+/* =========================================
+   TeamMemberDetail — หน้ารายละเอียดสมาชิก (/team/:id)
+   โครงตาม Figma frame "only one member" (node 104:813):
+   Navbar เดิม → breadcrumb → ส่วนบน (รูป+กล่องคำพูด | กรอบกริดผลงาน)
+   → เส้นคั่น → "Other member" carousel → Footer
+   ใช้ design tokens จาก home.css (import แล้วใน jsx)
+   โหมดมืดใช้ body.dark-mode ชุดเดียวกับหน้า Team
+========================================= */
+
+.member-detail-container {
+  max-width: 1300px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px 4% 40px;
+  min-height: 60vh;
+}
+
+/* ---------- Breadcrumb: home > layers > folder > folder-plus ---------- */
+.member-breadcrumb {
+  margin-top: 90px;
+  margin-bottom: 26px;
+}
+
+.breadcrumb-list {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  flex-wrap: wrap;
+}
+
+.breadcrumb-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* ">" คั่น — ตัวอักษร gradient ฟ้า→น้ำเงินตาม Figma */
+.breadcrumb-sep {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: bold;
+  font-size: 34px;
+  line-height: 1;
+  background: linear-gradient(180deg, #5d83ff 0%, #1a1b3c 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.breadcrumb-crumb {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border: none;
+  background: none;
+  color: var(--ink, #090909);
+  cursor: pointer;
+  transition: color 0.25s, transform 0.25s;
+}
+
+.breadcrumb-crumb:hover {
+  color: var(--blue-nav, #419AFF);
+  transform: translateY(-2px);
+}
+
+.breadcrumb-crumb.is-current {
+  cursor: default;
+  color: var(--blue-nav, #419AFF);
+}
+
+.breadcrumb-crumb.is-current:hover {
+  transform: none;
+  color: var(--blue-nav, #419AFF);
+}
+
+.breadcrumb-crumb:focus-visible {
+  outline: 3px solid var(--blue-nav, #419AFF);
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
+/* ---------- ส่วนบน: รูปสมาชิก (ซ้าย) + กรอบกริดผลงาน (ขวา) ---------- */
+.member-top {
+  display: grid;
+  grid-template-columns: minmax(280px, 420px) 1fr;
+  gap: 48px;
+  align-items: stretch;
+}
+
+/* --- ซ้าย: รูปสมาชิก + กล่องคำพูด + แถบไม้ขอบ --- */
+.member-figure {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 22px;
+  padding-right: 42px; /* เว้นที่ให้แถบไม้ด้านขวา */
+}
+
+/* กล่องคำพูด — พื้นเทาโปร่ง มุมโค้ง หางซ้าย ตาม Figma */
+.speech-bubble {
+  position: relative;
+  align-self: flex-start;
+  margin-left: 8px;
+  margin-bottom: -6px;
+  padding: 12px 20px;
+  background: rgba(128, 125, 125, 0.28);
+  border-radius: 18px 18px 18px 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-align: center;
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--ink, #090909);
+  max-width: 240px;
+}
+
+.bubble-accent {
+  color: var(--blue-nav, #419AFF);
+  font-weight: 600;
+}
+
+.bubble-text {
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 13px;
+}
+
+/* รูปสมาชิก — ยึดชิดล่างซ้ายแบบรูปแม้วใน Figma */
+.member-photo-frame {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  max-height: 560px;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: transparent;
+}
+
+.member-photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  /* ตัดขอบนุ่มๆ ให้ตัวรูปกลืนกับพื้นหลังเหมือนรูปตัดพื้นใน Figma */
+  -webkit-mask-image: linear-gradient(180deg, #000 88%, transparent 100%);
+  mask-image: linear-gradient(180deg, #000 88%, transparent 100%);
+}
+
+/* placeholder เมื่อรูปหาย — ตัวอักษรแรกของชื่อเล่นบนพื้น gradient ฟ้า */
+.member-detail-initial {
+  font-size: 96px;
+  font-weight: 800;
+  color: #fff;
+  background: linear-gradient(135deg, #4da0ff 0%, #aae4ff 100%);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+}
+
+/* แถบไม้สีเทียลขวาของรูป — ตามแถบแนวตั้งใน Figma */
+.photo-edge {
+  position: absolute;
+  top: -20px;
+  bottom: -30px;
+  right: 0;
+  width: 26px;
+  background: #eec494;
+  border-radius: 4px;
+}
+
+/* ---------- ขวา: กรอบกริดผลงาน (เลื่อนในกรอบได้) ---------- */
+.works-panel {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.works-frame {
+  flex: 1;
+  min-height: 480px;
+  max-height: 620px;
+  border: 1.5px solid var(--ink, #090909);
+  border-radius: 18px;
+  padding: 26px;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+}
+
+/* scrollbar ในกรอบ — แทร็กเทาเข้ม + ตัวเลื่อนเทาอ่อนตาม Figma */
+.works-frame::-webkit-scrollbar {
+  width: 14px;
+}
+
+.works-frame::-webkit-scrollbar-track {
+  background: #807d7d;
+  border-radius: 5px;
+}
+
+.works-frame::-webkit-scrollbar-thumb {
+  background: #d9d9d9;
+  border-radius: 3px;
+}
+
+.works-frame {
+  scrollbar-width: thin;
+  scrollbar-color: #d9d9d9 #807d7d;
+}
+
+/* กริดช่องผลงาน — desktop 4 คอลัมน์ตาม Figma, tablet 3, mobile 2 */
+.works-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 28px;
+}
+
+.works-cell-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+/* ช่องฐาน — สี่เหลี่ยมมุมโค้ง ขอบดำ สัดส่วน 1:1 */
+.works-cell {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border: 1.5px solid var(--ink, #090909);
+  border-radius: 16px;
+  background: var(--bg-primary, #ffffff);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  position: relative;
+}
+
+.works-cell-work:focus-visible {
+  outline: 3px solid var(--blue-nav, #419AFF);
+  outline-offset: 4px;
+}
+
+/* ช่องผลงาน — รูปเต็มช่อง */
+.works-cell-work img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ช่องว่าง + ช่องที่รูปหาย — กากบาท wireframe เดียวกับ placeholder การ์ดหน้า Team */
+.works-cell-empty::before,
+.works-cell-empty::after,
+.works-cell.is-placeholder::before,
+.works-cell.is-placeholder::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 1.5px;
+  height: 160%;
+  background: var(--gray-text, #313131);
+  opacity: 0.45;
+}
+
+.works-cell-empty::before,
+.works-cell.is-placeholder::before {
+  transform: rotate(45deg);
+}
+
+.works-cell-empty::after,
+.works-cell.is-placeholder::after {
+  transform: rotate(-45deg);
+}
+
+/* ✕ โชว์เฉพาะช่องที่รูปหาย (thumbnail 404) */
+.work-x {
+  display: none;
+  position: relative;
+  z-index: 1;
+  background: var(--bg-primary, #fff);
+  padding: 8px;
+  font-size: 20px;
+  color: var(--gray-text, #313131);
+  opacity: 0.75;
+}
+
+.works-cell.is-placeholder .work-x {
+  display: inline-flex;
+}
+
+/* ชั้นไม้ใต้กรอบ — แถบสีเทียล + เงาตาม Figma */
+.works-shelf {
+  height: 56px;
+  margin: 22px -6px 0;
+  background: #eec494;
+  border-radius: 6px;
+  box-shadow: 0 25px 37.7px rgba(12, 16, 85, 0.25);
+}
+
+/* ---------- เส้นคั่น + Other member carousel ---------- */
+.other-member {
+  max-width: 1300px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 30px 4% 70px;
+}
+
+.section-rule {
+  height: 2px;
+  background: linear-gradient(90deg, #1a1b3c 0%, #419AFF 100%);
+  opacity: 0.85;
+}
+
+.other-member-heading {
+  margin: 28px 0 30px;
+  text-align: center;
+  font-size: clamp(38px, 5vw, 60px);
+  font-weight: 800;
+  color: #71acfa;
+  text-decoration: underline;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 8px;
+}
+
+.carousel {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.carousel-track {
+  list-style: none;
+  margin: 0;
+  padding: 10px 4px;
+  display: flex;
+  gap: 26px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none; /* ซ่อน scrollbar เพราะมีปุ่มลูกศร */
+}
+
+.carousel-track::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel-item {
+  flex: 0 0 auto;
+  width: clamp(240px, 28vw, 380px);
+  scroll-snap-align: start;
+}
+
+/* การ์ดสมาชิกคนอื่น — กรอบมุมโค้งตาม Figma รูปเต็มการ์ด */
+.other-card {
+  position: relative;
+  display: block;
+  aspect-ratio: 1 / 1;
+  border: 1.5px solid var(--ink, #090909);
+  border-radius: 18px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #4da0ff33 0%, #aae4ff33 100%);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.other-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 32px rgba(65, 154, 255, 0.3);
+}
+
+.other-card:focus-visible {
+  outline: 3px solid var(--blue-nav, #419AFF);
+  outline-offset: 4px;
+}
+
+.other-card-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+
+/* ชื่อเล่น — แถบทึบมุมล่างการ์ด (ช่วยให้รู้ว่าคลิกไปหาใคร) */
+.other-card-caption {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  padding: 6px 18px;
+  border-radius: 20px;
+  background: rgba(9, 9, 9, 0.62);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  backdrop-filter: blur(4px);
+}
+
+/* ตัวอักษรแรกเมื่อรูปหาย — โชว์บนพื้น gradient ของการ์ด */
+.other-card-initial {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 84px;
+  font-weight: 800;
+  color: var(--blue-nav, #419AFF);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.other-card-photo ~ .other-card-initial {
+  display: none;
+}
+
+.carousel-arrow {
+  flex: 0 0 auto;
+  border: none;
+  background: none;
+  font-size: 34px;
+  color: var(--blue-nav, #419AFF);
+  cursor: pointer;
+  padding: 8px 10px;
+  opacity: 0.75;
+  transition: opacity 0.25s, transform 0.25s;
+  z-index: 2;
+}
+
+.carousel-arrow:hover {
+  opacity: 1;
+  transform: scale(1.15);
+}
+
+.carousel-arrow:focus-visible {
+  outline: 3px solid var(--blue-nav, #419AFF);
+  outline-offset: 4px;
+  border-radius: 8px;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1024px) {
+  .works-grid {
+    grid-template-columns: repeat(3, 1fr); /* tablet: 3 คอลัมน์ */
+    gap: 22px;
+  }
+}
+
+@media (max-width: 900px) {
+  .member-top {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+
+  .member-figure {
+    padding-right: 0;
+    max-width: 420px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .photo-edge {
+    display: none; /* mobile ไม่มีแถบไม้ — รูปอยู่บนเต็มความกว้าง */
+  }
+
+  .works-frame {
+    min-height: 380px;
+    max-height: 540px;
+    padding: 18px;
+  }
+
+  .member-breadcrumb {
+    margin-top: 80px;
+  }
+}
+
+@media (max-width: 600px) {
+  .works-grid {
+    grid-template-columns: repeat(2, 1fr); /* mobile: 2 คอลัมน์ */
+    gap: 16px;
+  }
+
+  .breadcrumb-sep {
+    font-size: 26px;
+  }
+
+  .carousel-arrow {
+    font-size: 26px;
+    padding: 6px;
+  }
+
+  .works-empty {
+    min-height: 260px;
+    font-size: 20px;
+  }
+}
+
+/* ---------- Dark mode (body.dark-mode ชุดเดียวกับหน้า Team) ---------- */
+body.dark-mode .breadcrumb-crumb {
+  color: #f8fafc;
+}
+
+body.dark-mode .breadcrumb-crumb.is-current {
+  color: #4da0ff;
+}
+
+body.dark-mode .breadcrumb-sep {
+  background: linear-gradient(180deg, #8fb3ff 0%, #419AFF 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+body.dark-mode .speech-bubble {
+  background: rgba(120, 130, 160, 0.25);
+  color: #e2e8f0;
+}
+
+body.dark-mode .bubble-text {
+  color: #cbd5e1;
+}
+
+body.dark-mode .works-frame {
+  border-color: #334155;
+  background: rgba(15, 23, 42, 0.35);
+}
+
+body.dark-mode .works-cell {
+  border-color: #4a6ba8;
+  background: #1e293b;
+}
+
+body.dark-mode .works-cell-empty::before,
+body.dark-mode .works-cell-empty::after,
+body.dark-mode .works-cell.is-placeholder::before,
+body.dark-mode .works-cell.is-placeholder::after {
+  background: #64748b;
+}
+
+body.dark-mode .work-x {
+  background: #1e293b;
+  color: #94a3b8;
+}
+
+body.dark-mode .work-title {
+  color: #cbd5e1;
+}
+
+body.dark-mode .works-empty {
+  color: #94a3b8;
+}
+
+body.dark-mode .works-shelf {
+  background: #8a6f4d;
+  box-shadow: 0 25px 37.7px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode .photo-edge {
+  background: #8a6f4d;
+}
+
+body.dark-mode .section-rule {
+  background: linear-gradient(90deg, #4da0ff 0%, #334155 100%);
+}
+
+body.dark-mode .other-card {
+  border-color: #4a6ba8;
+  background: rgba(42, 74, 138, 0.25);
+}
+
+/* เคารพ prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .works-frame {
+    scroll-behavior: auto;
+  }
+
+  .breadcrumb-crumb,
+  .other-card,
+  .carousel-arrow {
+    transition: none;
+  }
+
+  .other-card:hover,
+  .breadcrumb-crumb:hover,
+  .carousel-arrow:hover {
+    transform: none;
+  }
+}
