@@ -370,6 +370,15 @@ input:checked + .slider:before {
   flex-shrink: 0;
 }
 
+/* .grid-img เป็น <img> จริง (เดิม div + background-image) — ลอกพฤติกรรม background-image
+   default ให้หน้าตาเหมือนเดิมทุกพิกเซล: แสดงขนาดจริง 1:1 ตัดจากมุมซ้ายบน
+   (ทำให้ Chrome รายงาน LCP ได้ถูกต้อง — background บน composited layer รายงานช้าผิดปกติ) */
+.grid-img.has-image {
+  object-fit: none;
+  object-position: left top;
+  display: block;
+}
+
 @keyframes scroll {
   0%   { transform: translateX(0); }
   100% { transform: translateX(-100%); }
@@ -839,6 +848,12 @@ input:checked + .slider:before {
 
 .team-photo {
   object-fit: cover;
+  /* รูปสมาชิกเป็นแนวตั้ง (2:3) โชว์ในกรอบ 3:4 — ชี้กลางรูปแนวนอน, ยึดจากด้านบนเพื่อไม่ตัดหน้า
+     (ใช้แบบเดียวกับ .member-photo หน้า Team) */
+  object-position: center top;
+  /* height attr บน <img> (จากการ optimize) ไม่งั้นทับ aspect-ratio — ต้องรีเซ็ตเป็น auto
+     ไม่งั้นกล่องรูปจะสูง 1800px แล้วการ์ดครอบจนเห็นแค่ช่วงอก */
+  height: auto;
 }
 
 /* Placeholder เมื่อไม่มีรูป/โหลดไม่สำเร็จ — ตัวอักษรย่อชื่อเล่น */
@@ -1105,7 +1120,7 @@ body.dark-mode .logo-dark {
    รูป: public/home/duck-logo.jpg (block ใหม่ท้ายไฟล์ — ไม่แก้กฎเดิม)
 ========================================= */
 .wire-box.logo-box {
-  background-image: url('/home/duck-logo.jpg');
+  background-image: url('/home/duck-logo.webp');
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;

@@ -18,31 +18,35 @@ const teamMembers = [
 
 // รูป marquee ด้านบนสุดของหน้า Home (public/home/) — วนซ้ำตามลำดับนี้ทุกกล่อง
 const HERO_MARQUEE_IMAGES = [
-  { id: 1, src: '/home/digital-horizon-pumpui.jpg', alt: 'Digital Horizon — photography by PUMPUI' },
-  { id: 2, src: '/home/emu-otori.png', alt: 'Emu Otori — 3D art by BOSS' },
-  { id: 3, src: '/home/img-1921-kan.jpg', alt: 'Photography by KAN HI-END' },
-  { id: 4, src: '/home/the-light-sorrawit.jpg', alt: 'The Light — photography by SOS' },
-  { id: 5, src: '/home/the-lotus-luktan.jpg', alt: 'The Lotus — graphic design by LUKTAN' },
-  { id: 6, src: '/home/yesterday-practice-boss.png', alt: 'Yesterday Practice — graphic design by BOSS' },
+  { id: 1, src: '/home/digital-horizon-pumpui.webp', alt: 'Digital Horizon — photography by PUMPUI' },
+  { id: 2, src: '/home/emu-otori.webp', alt: 'Emu Otori — 3D art by BOSS' },
+  { id: 3, src: '/home/img-1921-kan.webp', alt: 'Photography by KAN HI-END' },
+  { id: 4, src: '/home/the-light-sorrawit.webp', alt: 'The Light — photography by SOS' },
+  { id: 5, src: '/home/the-lotus-luktan.webp', alt: 'The Lotus — graphic design by LUKTAN' },
+  { id: 6, src: '/home/yesterday-practice-boss.webp', alt: 'Yesterday Practice — graphic design by BOSS' },
   { id: 7, src: '/home/crimson-deck-sos.png', alt: 'Crimson Deck — mandala design by SODA' },
-  { id: 8, src: '/home/the-door-luktan.jpg', alt: 'The Door — surrealist digital collage by LUKTAN' },
-  { id: 9, src: '/home/do-anything.jpg', alt: 'Do Anything — artwork by BOSS' },
-  { id: 10, src: '/home/lover-cmm.png', alt: 'Lover — artwork by BOSS' },
-  { id: 11, src: '/home/nike.png', alt: 'Nike — artwork by BOSS' },
+  { id: 8, src: '/home/the-door-luktan.webp', alt: 'The Door — surrealist digital collage by LUKTAN' },
+  { id: 9, src: '/home/do-anything.webp', alt: 'Do Anything — artwork by BOSS' },
+  { id: 10, src: '/home/lover-cmm.webp', alt: 'Lover — artwork by BOSS' },
+  { id: 11, src: '/home/nike.webp', alt: 'Nike — artwork by BOSS' },
 ];
 
 // กล่องรูปหนึ่งชุดของ marquee (ใช้ซ้ำทุกแถว/ทุกสำเนา — ชุดเหมือนกันทำให้วนลูปไร้รอยต่อ)
+// ใช้ <img> แทน div + background-image เดิม — CSS background บน layer ที่ถูก animate
+// (transform) ไม่ยอมรายงาน LCP entry จนช้ามาก; <img> รายงานปกติ
+// object-fit: none + object-position: left top = ลอกพฤติกรรม background-image default
+// (ขนาดจริง 1:1 ตัดจากมุมซ้ายบน) หน้าตาจึงเหมือนเดิมทุกพิกเซล
 function MarqueeImageSet() {
   return (
     <>
       {HERO_MARQUEE_IMAGES.map((img) => (
-        <div
+        <img
           key={img.id}
+          src={img.src}
+          alt={img.alt}
           className="grid-img has-image"
-          style={{ backgroundImage: `url(${img.src})` }}
-          role="img"
-          aria-label={img.alt}
-        ></div>
+          decoding="async"
+        ></img>
       ))}
     </>
   );
@@ -300,9 +304,9 @@ function Home() {
     <>
       {/* LCP hint — รูป marquee บนสุดของ hero ใช้ CSS background-image (โหลดพร้อมกันอยู่แล้ว)
           preload + fetchpriority=high ช่วยจัดลำดับให้โหลดก่อน resource อื่น — React 19 hoist <link> ขึ้น <head> เอง */}
-      <link rel="preload" as="image" href="/home/digital-horizon-pumpui.jpg" fetchPriority="high" />
-      <link rel="preload" as="image" href="/home/emu-otori.png" fetchPriority="high" />
-      <link rel="preload" as="image" href="/home/img-1921-kan.jpg" fetchPriority="high" />
+      <link rel="preload" as="image" href="/home/digital-horizon-pumpui.webp" fetchPriority="high" />
+      <link rel="preload" as="image" href="/home/emu-otori.webp" fetchPriority="high" />
+      <link rel="preload" as="image" href="/home/img-1921-kan.webp" fetchPriority="high" />
 
       <nav className="main-nav">
         <div className="nav-container">
@@ -322,8 +326,8 @@ function Home() {
           <button className="hamburger-btn" aria-label="Menu">☰</button>
 
           <Link to="/" className="nav-brand-logo" aria-label="Say Hi Home">
-            <img src="/logoSayHi-03.png" alt="Say Hi Logo" className="logo-light" />
-            <img src="/logoSayHi-01.png" alt="Say Hi Logo Dark" className="logo-dark" />
+            <img src="/logoSayHi-03.webp" alt="Say Hi Logo" className="logo-light" />
+            <img src="/logoSayHi-01.webp" alt="Say Hi Logo Dark" className="logo-dark" />
           </Link>
         </div>
       </nav>

@@ -98,8 +98,8 @@ function Team() {
         </div>
 
         <Link to="/" className="nav-brand-logo" aria-label="Say Hi Home">
-                    <img src="/logoSayHi-03.png" alt="Say Hi Logo" className="logo-light" />
-                    <img src="/logoSayHi-01.png" alt="Say Hi Logo Dark" className="logo-dark" />
+                    <img src="/logoSayHi-03.webp" alt="Say Hi Logo" className="logo-light" />
+                    <img src="/logoSayHi-01.webp" alt="Say Hi Logo Dark" className="logo-dark" />
         </Link>
 
       </nav>
