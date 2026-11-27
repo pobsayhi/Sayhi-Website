@@ -10,9 +10,9 @@ const EMAIL = 'sayhimultimedia@gmail.com';
 // ใส่ path รูปรวมสมาชิกทั้ง 4 รูปตรงนี้ในอนาคต เช่น "/team/group-01.webp"
 // (ถ้าอยากได้ 3 รูป แค่ลบออก 1 บรรทัด เลย์เอาต์จะจัดให้โดยอัตโนมัติ)
 const GROUP_PHOTOS = [
-  { id: 1, alt: 'Say Hi Crew 01', src: '/Contact/All-2X8A9243.jpg' },
-  { id: 2, alt: 'Say Hi Crew 02', src: '/Contact/All-2X8A9213.jpg' },
-  { id: 3, alt: 'Say Hi Crew 03', src: '/Contact/All-2X8A9249.jpg' },
+  { id: 1, alt: 'Say Hi Crew 01', src: '/Contact/All-2X8A9243.jpg', width: 1200, height: 800 },
+  { id: 2, alt: 'Say Hi Crew 02', src: '/Contact/All-2X8A9213.jpg', width: 1200, height: 800 },
+  { id: 3, alt: 'Say Hi Crew 03', src: '/Contact/All-2X8A9249.jpg', width: 1200, height: 800 },
 ];
 
 const SOCIAL_LINKS = [
@@ -152,6 +152,8 @@ function LandscapePhotoCard({ item, index, isVisible }) {
             src={item.src}
             alt={item.alt}
             className="wide-photo-img"
+            width={item.width}
+            height={item.height}
             loading="lazy"
             decoding="async"
             onError={() => setImgFailed(true)}

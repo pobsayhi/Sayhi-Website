@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import '../Home/home.css';
 import './WorkDetail.css';
 import { DEMO_WORKS } from './workdata';
+import { imageDims } from '../../data/imageDims';
 
 function WorkDetail() {
   const { id } = useParams();
@@ -129,6 +130,9 @@ function WorkDetail() {
                 src={heroSrc}
                 alt={work.title}
                 className="wd-hero-img"
+                {...imageDims(heroSrc)}
+                fetchPriority="high"
+                decoding="async"
                 onError={() => setHeroImgFailed(true)}
               />
             )}
@@ -207,6 +211,7 @@ function WorkDetail() {
                       src={work.creatorImage}
                       alt={work.creatorFullName}
                       className="wd-creator-img"
+                      {...imageDims(work.creatorImage)}
                       loading="lazy"
                       decoding="async"
                       onError={() => setCreatorImgFailed(true)}
@@ -243,6 +248,9 @@ function WorkDetail() {
                         src={work.image}
                         alt={work.title}
                         className="wd-artwork-img"
+                        {...imageDims(work.image)}
+                        fetchPriority="high"
+                        decoding="async"
                         onError={() => setWorkImgFailed(true)}
                       />
                       <span className="wd-yt-play-btn" aria-hidden="true">
@@ -259,6 +267,8 @@ function WorkDetail() {
                         src={work.image}
                         alt={work.title}
                         className="wd-artwork-img"
+                        {...imageDims(work.image)}
+                        fetchPriority="high"
                         decoding="async"
                         onClick={() => setZoomOpen(true)}
                         onError={() => setWorkImgFailed(true)}
@@ -376,6 +386,9 @@ function WorkDetail() {
             src={work.image}
             alt={work.title}
             className="wd-lightbox-img"
+            {...imageDims(work.image)}
+            loading="lazy"
+            decoding="async"
             style={{ transform: `scale(${zoomScale})` }}
             onClick={(e) => e.stopPropagation()}
           />
@@ -464,6 +477,7 @@ function OtherWorkCard({ item }) {
           <img
             src={item.image}
             alt={item.title}
+            {...imageDims(item.image)}
             loading="lazy"
             decoding="async"
             onError={() => setImgFailed(true)}

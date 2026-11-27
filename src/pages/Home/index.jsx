@@ -63,6 +63,8 @@ function TeamCard({ member }) {
           src={member.image}
           alt={member.name}
           className="team-photo"
+          width={1200}
+          height={1800}
           loading="lazy"
           decoding="async"
           onError={() => setImgFailed(true)}
@@ -296,6 +298,12 @@ function Home() {
 
   return (
     <>
+      {/* LCP hint — รูป marquee บนสุดของ hero ใช้ CSS background-image (โหลดพร้อมกันอยู่แล้ว)
+          preload + fetchpriority=high ช่วยจัดลำดับให้โหลดก่อน resource อื่น — React 19 hoist <link> ขึ้น <head> เอง */}
+      <link rel="preload" as="image" href="/home/digital-horizon-pumpui.jpg" fetchPriority="high" />
+      <link rel="preload" as="image" href="/home/emu-otori.png" fetchPriority="high" />
+      <link rel="preload" as="image" href="/home/img-1921-kan.jpg" fetchPriority="high" />
+
       <nav className="main-nav">
         <div className="nav-container">
           <div className="logo"></div>

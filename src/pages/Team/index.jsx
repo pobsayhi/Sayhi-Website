@@ -4,6 +4,7 @@ import './Team.css';
 import { Link } from 'react-router-dom';
 import teamMembers from '../../data/teamMembers';
 import { DEMO_WORKS } from '../Work/workdata';
+import { imageDims } from '../../data/imageDims';
 
 function Team() {
 
@@ -143,6 +144,8 @@ function Team() {
                     src={member.image}
                     alt={member.nickname}
                     className="member-photo"
+                    width={1200}
+                    height={1800}
                     loading="lazy"
                     decoding="async"
                     onError={(e) => {
@@ -162,6 +165,8 @@ function Team() {
                         <img
                           src={member.image}
                           alt=""
+                          width={1200}
+                          height={1800}
                           loading="lazy"
                           decoding="async"
                           onError={(e) => {
@@ -186,6 +191,7 @@ function Team() {
                             <img
                               src={work.image}
                               alt=""
+                              {...imageDims(work.image)}
                               loading="lazy"
                               decoding="async"
                               onError={(e) => {

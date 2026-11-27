@@ -5,6 +5,7 @@ import './Team.css';
 import './TeamMemberDetail.css';
 import teamMembers from '../../data/teamMembers';
 import { DEMO_WORKS } from '../Work/workdata';
+import { imageDims } from '../../data/imageDims';
 
 /* =========================================
    Breadcrumb icons — เส้นบางสไตล์เดียวกับ Figma
@@ -200,6 +201,10 @@ function TeamMemberDetail() {
                 <img
                   src={member.image}
                   alt={`${member.nickname} — ${member.fullName}`}
+                  width={1200}
+                  height={1800}
+                  fetchPriority="high"
+                  decoding="async"
                   onError={() => setImgError(true)}
                 />
               ) : (
@@ -234,6 +239,7 @@ function TeamMemberDetail() {
                       <img
                         src={work.image}
                         alt={work.title}
+                        {...imageDims(work.image)}
                         loading="lazy"
                         decoding="async"
                         onError={(e) => {
@@ -292,6 +298,8 @@ function TeamMemberDetail() {
                     <img
                       src={m.image}
                       alt=""
+                      width={1200}
+                      height={1800}
                       loading="lazy"
                       decoding="async"
                       className="other-card-photo"

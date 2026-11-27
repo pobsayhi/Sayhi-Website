@@ -3,6 +3,7 @@ import { Link, useSearchParams, useParams } from 'react-router-dom';
 import '../Home/home.css';
 import './Work.css';
 import { DEMO_WORKS } from './workdata';
+import { imageDims } from '../../data/imageDims';
 
 // ตัวเลือกตัวกรองด้านซ้าย (ตาม Wireframe)
 const FILTER_OPTIONS = {
@@ -283,7 +284,13 @@ function Work() {
                     >
                       <div className={`work-card-thumb ${work.image ? 'has-image' : ''}`}>
                         {work.image && (
-                          <img src={work.image} alt={work.title} loading="lazy" decoding="async" />
+                          <img
+                            src={work.image}
+                            alt={work.title}
+                            {...imageDims(work.image)}
+                            loading="lazy"
+                            decoding="async"
+                          />
                         )}
                         {work.youtubeId && (
                           <span className="work-play-badge" aria-label="Motion video">
